@@ -1,16 +1,24 @@
 package bowling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Cette classe a pour but d'enregistrer le nombre de quilles abattues lors des
  * lancers successifs d'<b>un seul et même</b> joueur, et de calculer le score
  * final de ce joueur
  */
 public class PartieMonoJoueur {
+	
+	private int nbDeQuillesAbattues;
+	public List<Tour> lesTours;
 
 	/**
 	 * Constructeur
 	 */
 	public PartieMonoJoueur() {
+		this.nbDeQuillesAbattues=0;
+		this.lesTours=new ArrayList<>();
 	}
 
 	/**
@@ -21,7 +29,9 @@ public class PartieMonoJoueur {
 	 * @return vrai si le joueur doit lancer à nouveau pour continuer son tour, faux sinon	
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		if(estTerminee()) throw new IllegalStateException("La partie est terminée");
+		boolean res=true;
+		
 	}
 
 	/**
@@ -38,7 +48,11 @@ public class PartieMonoJoueur {
 	 * @return vrai si la partie est terminée pour ce joueur, faux sinon
 	 */
 	public boolean estTerminee() {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		boolean res = false;
+		if(numeroTourCourant()==10){
+			res= true;
+		}
+		return res;
 	}
 
 
@@ -46,7 +60,11 @@ public class PartieMonoJoueur {
 	 * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
 	 */
 	public int numeroTourCourant() {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		if(estTerminee()){
+			return 0;
+		} else {
+			return lesTours.getLast().getNumeroTour();
+		}
 	}
 
 	/**
