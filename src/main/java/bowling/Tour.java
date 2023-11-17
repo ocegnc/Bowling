@@ -57,7 +57,7 @@ public class Tour {
 		return getNbQuillesAbattuesl1();
 	}
 	
-	public int score(){
+	public int score(){ 
 		int scoreTour=0;
 		suivant.getNumeroTour()+=1;
 		if(estUnStrike()){
