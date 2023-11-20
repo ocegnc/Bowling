@@ -5,24 +5,48 @@ public class Tour {
 	private int numeroTour;
 	private int nbQuillesAbattuesl1;
 	private int nbQuillesAbattuesl2;
-
-	//private ArrayList lesLances;
-	
 	private Tour suivant;
+	private int boule=0;
 	
-	public Tour(int nbQuillesAbattuesl1, int nbQuillesAbattuesl2, Tour suivant){
+	public Tour(Tour suivant){
 		globalNum++;
 		this.numeroTour=globalNum;
-		this.nbQuillesAbattuesl1=nbQuillesAbattuesl1;
-		this.nbQuillesAbattuesl2=nbQuillesAbattuesl2;
+		this.nbQuillesAbattuesl1=0;
+		this.nbQuillesAbattuesl2=0;
 		this.suivant = suivant;
 	}
 	
 	public Tour(){
-		this.nbQuillesAbattuesl1=10;
-		this.nbQuillesAbattuesl2= Integer.parseInt(null);
 	}
 	
+	public void enregistreLancer(int nbQuillesAbattues){
+		boule++;
+		if(boule==1){
+			nbQuillesAbattuesl1=nbQuillesAbattues;
+		} else if(boule==2){
+			nbQuillesAbattuesl2=nbQuillesAbattues;
+		}
+		
+	}
+	
+	public boolean estTerminee(){
+		boolean res=true;
+		if(boule!=2){
+			res=false;
+		}
+		if(estUnStrike()){
+			res=true;
+		}
+		return res;
+	}
+	
+	public int getBoule(){
+		return boule;
+	}
+	
+	public Tour getSuivant(){
+		return suivant;
+	}
 	public int getNumeroTour() {
 		return numeroTour;
 	}
@@ -50,7 +74,11 @@ public class Tour {
 	}
 	
 	public int bonusPourStrike(){
-		return getNbQuillesAbattuesl1()+getNbQuillesAbattuesl2();
+		if(this.estUnStrike()){
+			return getNbQuillesAbattuesl1()+ suivant.bonusPourSpare();
+		} else {
+			return getNbQuillesAbattuesl1() + getNbQuillesAbattuesl2();
+		}
 	}
 	
 	public int bonusPourSpare(){
@@ -59,7 +87,6 @@ public class Tour {
 	
 	public int score(){ 
 		int scoreTour=0;
-		suivant.getNumeroTour()+=1;
 		if(estUnStrike()){
 			scoreTour = 10 + suivant.bonusPourStrike();
 		} else if(estUnSpare()){
@@ -69,4 +96,5 @@ public class Tour {
 		}
 		return scoreTour;
 	}
+	
 }

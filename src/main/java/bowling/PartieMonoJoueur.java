@@ -10,15 +10,17 @@ import java.util.List;
  */
 public class PartieMonoJoueur {
 	
-	private int nbDeQuillesAbattues;
 	public List<Tour> lesTours;
+	public static final int nbTours=10;
+	
 
 	/**
 	 * Constructeur
 	 */
 	public PartieMonoJoueur() {
-		this.nbDeQuillesAbattues=0;
-		this.lesTours=new ArrayList<>();
+		for(int i=1; i<nbTours; i++){
+			lesTours.add(new Tour());
+		}
 	}
 
 	/**
@@ -31,7 +33,16 @@ public class PartieMonoJoueur {
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
 		if(estTerminee()) throw new IllegalStateException("La partie est terminée");
 		boolean res=true;
-		
+		int index = lesTours.size()-1;
+		Tour tourCourant = lesTours.get(index);
+		tourCourant.enregistreLancer(nombreDeQuillesAbattues);
+		if(tourCourant.estTerminee()){
+			tourCourant=tourCourant.getSuivant();
+		}
+		if(this.estTerminee()||tourCourant.getBoule()==2){
+			res=false;
+		}
+		return res;
 	}
 
 	/**
@@ -41,7 +52,12 @@ public class PartieMonoJoueur {
 	 * @return Le score du joueur
 	 */
 	public int score() {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		int scorePartie=0;
+		for(Tour t : lesTours){
+			scorePartie+=t.score();
+		}
+		return scorePartie;
+		
 	}
 
 	/**
@@ -60,11 +76,9 @@ public class PartieMonoJoueur {
 	 * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
 	 */
 	public int numeroTourCourant() {
-		if(estTerminee()){
-			return 0;
-		} else {
-			return lesTours.getLast().getNumeroTour();
-		}
+		int index = lesTours.size()-1;
+		Tour tourCourant = lesTours.get(index);
+		return tourCourant.getNumeroTour();
 	}
 
 	/**
@@ -72,7 +86,9 @@ public class PartieMonoJoueur {
 	 *         est fini
 	 */
 	public int numeroProchainLancer() {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		int index = lesTours.size()-1;
+		Tour tourCourant = lesTours.get(index);
+		return tourCourant.getBoule()+1;
 	}
 
 }
